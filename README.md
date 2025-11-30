@@ -28,6 +28,15 @@ Using a **Random Forest Machine Learning model**, the system efficiently analyze
 | Environment | virtualenv (`venv`) |
 
 ---
+## 🖼️ Application Screenshots
+
+### 🏠 Home Page  
+<img width="1886" height="861" alt="Image" src="https://github.com/user-attachments/assets/ee032049-b81c-4411-ab89-be17a611d4bc" />
+
+---
+
+### 🔍 Prediction & Risk Output Page  
+<img width="1884" height="842" alt="Image" src="https://github.com/user-attachments/assets/5f037df1-91da-4924-96ad-e2f69a776836" />
 
 
 ---
