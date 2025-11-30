@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real-Time Avalanche Weather & Risk</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #f9fafb;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    /* 🧭 Navbar */
+    nav {
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+    }
+
+    .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .brand svg {
+      width: 32px;
+      height: 32px;
+      color: #2563eb;
+    }
+
+    .brand span {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #4b5563;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .nav-btn:hover {
+      background-color: #f3f4f6;
+      color: #111827;
+    }
+
+    .nav-btn.active {
+      background-color: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    }
+
+    @media (max-width: 640px) {
+      .nav-btn span { display: none; }
+    }
+
+    /* 🌨️ Main Section */
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 30px;
+      font-size: 2rem;
+    }
+
+    input, button {
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #d1d5db;
+      border-radius: 10px;
+      outline: none;
+      transition: border 0.2s ease;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: #1e40af;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: linear-gradient(to bottom right, #f1f5f9, #e0f2fe);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #1d4ed8;
+    }
+
+    .popular-locations {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .popular-locations button {
+      background: #f3f4f6;
+      border: 2px solid #e5e7eb;
+      color: #111827;
+      border-radius: 10px;
+      padding: 10px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .popular-locations button:hover {
+      background: #e0f2fe;
+      border-color: #2563eb;
+      color: #1e40af;
+    }
+
+    .risk {
+      margin-top: 30px;
+      padding: 25px;
+      border-radius: 15px;
+      color: white;
+      text-align: center;
+    }
+
+    .low { background: #22c55e; }
+    .moderate { background: #eab308; }
+    .high { background: #f97316; }
+    .extreme { background: #dc2626; }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      .popular-locations { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🧭 Navbar -->
+  <nav>
+    <div class="navbar-container">
+      <div class="brand" onclick="window.location.href='home.html'">
+        <i ></i>
+        <span>Avalanche Risk Assessment System</span>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="window.location.href='home.html'">
+          <i></i><span>Home</span>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='prediction.html'">
+          <i></i><span>Prediction</span>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='userguide.html'">
+          <i ></i><span>User Guide</span>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='risk.html'">
+          <i></i><span>Risk Monitor</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 🌨️ Main Weather & Risk Section -->
+  <div class="container">
+    <h1>🌦️ Real-Time Weather & Avalanche Risk</h1>
+
+    <div>
+      <h2 style="color:#1e40af; font-size:1.3rem; margin-bottom:10px;">Select Location</h2>
+      <div style="display:flex; gap:10px; margin-bottom:20px;">
+        <input type="text" id="customLocation" placeholder="Enter location..." />
+        <button onclick="searchWeather()">Search</button>
+      </div>
+
+      <h3 style="color:#374151; margin-bottom:10px;">Popular Locations</h3>
+      <div class="popular-locations" id="locationButtons"></div>
+    </div>
+
+    <div id="weatherCard" style="margin-top:40px; display:none;">
+      <h2 id="locationName" style="text-align:center; color:#1e293b; font-size:1.5rem; margin-bottom:15px;"></h2>
+      <p id="weatherDesc" style="text-align:center; color:#64748b; margin-bottom:25px;"></p>
+
+      <div class="grid">
+        <div class="card">
+          <h3><i data-lucide="thermometer"></i> Temperature</h3>
+          <div class="value" id="temp"></div>
+        </div>
+        <div class="card">
+          <h3><i data-lucide="droplets"></i> Humidity</h3>
+          <div class="value" id="humidity"></div>
+        </div>
+        <div class="card">
+          <h3><i data-lucide="snowflake"></i> Snowfall</h3>
+          <div class="value" id="snowfall"></div>
+        </div>
+        <div class="card">
+          <h3><i data-lucide="wind"></i> Wind Speed</h3>
+          <div class="value" id="wind"></div>
+        </div>
+      </div>
+
+      <div id="riskBox" class="risk low">
+        <h2 id="riskLevel" style="font-size:1.8rem; margin-bottom:5px;">Risk Level</h2>
+        <p id="riskMessage" style="font-size:1rem;"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    const API_KEY = "29ab19b4d2c961e228e9b15f29f2dadb";
+    const POPULAR_LOCATIONS = [
+      "Leh, Ladakh",
+      "Gulmarg, Jammu and Kashmir",
+      "Manali, Himachal Pradesh",
+      "Shimla, Himachal Pradesh",
+      "Auli, Uttarakhand",
+      "Nainital, Uttarakhand",
+      "Srinagar, Jammu and Kashmir",
+      "Dharamshala, Himachal Pradesh"
+    ];
+
+    const locationButtons = document.getElementById("locationButtons");
+    POPULAR_LOCATIONS.forEach(loc => {
+      const btn = document.createElement("button");
+      btn.textContent = loc;
+      btn.onclick = () => fetchWeather(loc);
+      locationButtons.appendChild(btn);
+    });
+
+    async function searchWeather() {
+      const loc = document.getElementById("customLocation").value.trim();
+      if (loc) fetchWeather(loc);
+    }
+
+    async function fetchWeather(location) {
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${API_KEY}&units=metric`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.cod !== 200) {
+          alert("Location not found!");
+          return;
+        }
+
+        const temp = data.main.temp.toFixed(1);
+        const humidity = data.main.humidity;
+        const wind = data.wind.speed;
+        const desc = data.weather[0].description;
+        const snow = data.snow ? data.snow["1h"] || data.snow["3h"] || 0 : 0;
+
+        document.getElementById("locationName").textContent = data.name;
+        document.getElementById("weatherDesc").textContent = desc;
+        document.getElementById("temp").textContent = `${temp}°C`;
+        document.getElementById("humidity").textContent = `${humidity}%`;
+        document.getElementById("snowfall").textContent = `${snow} mm`;
+        document.getElementById("wind").textContent = `${wind} m/s`;
+
+        const { level, message } = calculateRisk(temp, humidity, snow, wind);
+        const riskBox = document.getElementById("riskBox");
+        riskBox.className = `risk ${level}`;
+        document.getElementById("riskLevel").textContent = level.toUpperCase() + " RISK";
+        document.getElementById("riskMessage").textContent = message;
+
+        document.getElementById("weatherCard").style.display = "block";
+      } catch (err) {
+        alert("Error fetching weather data!");
+        console.error(err);
+      }
+    }
+
+    function calculateRisk(temp, humidity, snow, wind) {
+      if (snow > 50 || (temp > -2 && snow > 20)) {
+        return { level: "extreme", message: "🚨 Very high avalanche risk. Avoid travel in this region." };
+      } else if (snow > 20 || wind > 10) {
+        return { level: "high", message: "⚠️ High risk. Proceed with extreme caution." };
+      } else if (snow > 5 || humidity > 70) {
+        return { level: "moderate", message: "🟡 Moderate risk. Stay alert and monitor conditions." };
+      } else {
+        return { level: "low", message: "🟢 Low avalanche risk under current weather conditions." };
+      }
+    }
+  </script>
+</body>
+</html>

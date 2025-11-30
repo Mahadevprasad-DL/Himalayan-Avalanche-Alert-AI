@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI-Driven Avalanche Risk Assessment</title>
+  <style>
+    /* 🌈 Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #fff;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    section {
+      padding: 80px 20px;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 700;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 10px;
+    }
+
+    /* 🌄 Hero Section */
+    .hero {
+      position: relative;
+      background: linear-gradient(to right, #0a2540, #155b8a, #1e293b);
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("https://images.pexels.com/photos/1054218/pexels-photo-1054218.jpeg?auto=compress&cs=tinysrgb&w=1920") center/cover no-repeat;
+      opacity: 0.2;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 120px 20px;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .highlight {
+      color: #facc15;
+      display: block;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #e5e7eb;
+      margin-bottom: 40px;
+    }
+
+    .hero .btn-primary {
+      background: #facc15;
+      color: #1e293b;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      margin: 10px;
+    }
+
+    .hero .btn-primary:hover {
+      background: #fde047;
+      transform: translateY(-3px);
+    }
+
+    .hero .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 15px 30px;
+      font-size: 1.1rem;
+    }
+
+    .hero .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* 📘 About Section */
+    .about {
+      background: #fff;
+      text-align: center;
+    }
+
+    .about h2 {
+      font-size: 2.5rem;
+      color: #111827;
+      margin-bottom: 20px;
+    }
+
+    .about p {
+      color: #6b7280;
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: 0 auto 50px;
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+      border-radius: 20px;
+      padding: 50px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .about-content h3 {
+      color: #111827;
+      margin-bottom: 15px;
+      font-size: 1.6rem;
+    }
+
+    .about-content p {
+      color: #374151;
+      text-align: justify;
+    }
+
+    /* ⚙️ Features Section */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+
+    .feature-card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: left;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+      border: 1px solid #f3f4f6;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: #93c5fd;
+      box-shadow: 0 10px 20px rgba(59, 130, 246, 0.1);
+    }
+
+    .feature-icon {
+      background: #dbeafe;
+      color: #2563eb;
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+
+    /* ⚡ Call to Action */
+    .cta {
+      background: linear-gradient(to right, #2563eb, #1e40af);
+      color: white;
+      text-align: center;
+      padding: 70px 20px;
+      border-radius: 20px;
+      margin-top: 80px;
+    }
+
+    .cta h3 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .cta p {
+      color: #bfdbfe;
+      margin-bottom: 30px;
+    }
+
+    .cta button {
+      background: #facc15;
+      color: #1e293b;
+      padding: 15px 35px;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .cta button:hover {
+      background: #fde047;
+      transform: translateY(-3px);
+    }
+
+    /* 📘 Guide Section */
+    .guide {
+      background: #f9fafb;
+      text-align: center;
+    }
+
+    .guide h3 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .guide p {
+      color: #6b7280;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .guide button {
+      background: #2563eb;
+      color: #fff;
+      padding: 12px 30px;
+      font-size: 1rem;
+    }
+
+    .guide button:hover {
+      background: #1e40af;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 2rem; }
+      .about-content { padding: 25px; }
+    }
+
+    /* Navigation */
+    nav {
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+    }
+
+    .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand span {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    /* 🔘 Nav Buttons */
+    .nav-buttons {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #4b5563;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: #f3f4f6;
+      color: #111827;
+    }
+
+    .nav-btn.active {
+      background-color: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    }
+
+    /* 📱 Responsive */
+    @media (max-width: 640px) {
+      .nav-btn span {
+        display: none;
+      }
+    }
+
+    /* 🌨️ Recent Avalanche Cards */
+    .recent-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      color: #111827;
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    .av-card {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .av-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .av-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .av-card .info {
+      padding: 15px;
+    }
+
+    .av-card h4 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      color: #1e293b;
+    }
+
+    .av-card p {
+      color: #475569;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+  </style>
+</head>
+<body>
+
+   <nav>
+  <div class="navbar-container">
+    <div class="brand" onclick="window.location.href='home.html'" style="cursor:pointer;">
+      <i></i>
+      <span>Avalanche Risk Assessment System</span>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="nav-btn active" onclick="window.location.href='home.html'">
+        <i></i>
+        <span>Home</span>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='prediction.html'">
+        <i></i>
+        <span>Prediction</span>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='userguide.html'">
+        <i ></i>
+        <span>User Guide</span>
+      </button>
+      <button class="nav-btn" onclick="window.location.href='risk.html'">
+          <i></i><span>Risk Monitor</span>
+        </button>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- 🌄 Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div style="background:#facc15; display:inline-block; padding:15px; border-radius:50%; margin-bottom:20px;">
+        ⚠️
+      </div>
+      <h1>
+        AI-Driven Avalanche Risk
+        <span class="highlight">Assessment System</span>
+      </h1>
+      <p>Predicting avalanche risks using advanced machine learning to protect lives in the Himalayan regions of India.</p>
+      <div>
+        <button class="btn btn-primary" onclick="navigateTo('prediction')">Start Prediction →</button>
+        <button class="btn btn-secondary" onclick="navigateTo('guide')">Learn More</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 📘 About Section -->
+  <section class="about">
+    <h2>About This Project</h2>
+    <p>An innovative solution combining artificial intelligence and meteorological data to predict avalanche occurrences in India's mountainous regions.</p>
+
+    <div class="about-content">
+      <div>
+        <h3>The Challenge</h3>
+        <p>
+          Avalanches pose a significant threat to life and infrastructure in the Himalayan regions of India. Traditional methods of risk assessment are often reactive and lack precision. Our system addresses this critical gap by leveraging machine learning algorithms to analyze terrain characteristics and provide predictive insights.
+        </p>
+      </div>
+      <div>
+        <h3>Our Solution</h3>
+        <p>
+          Using the Random Forest algorithm, our system analyzes multiple terrain parameters including elevation, slope, aspect, and location-specific data to generate accurate risk assessments for regions like Leh, Gulmarg, Manali, and Shimla.
+        </p>
+      </div>
+    </div>
+
+    <!-- ⚙️ Features -->
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h4>AI-Powered Predictions</h4>
+        <p>Utilizing Random Forest algorithm to analyze terrain data and predict avalanche risks with high accuracy.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h4>Early Warning System</h4>
+        <p>Real-time risk assessment to provide timely warnings and help save lives in vulnerable mountain regions.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <h4>Data-Driven Insights</h4>
+        <p>Comprehensive analysis of elevation, slope, aspect, and location data for precise risk evaluation.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📍</div>
+        <h4>Location-Specific Analysis</h4>
+        <p>Tailored predictions for critical regions including Leh, Gulmarg, Manali, and Shimla.</p>
+      </div>
+    </div>
+
+    <!-- ⚡ Call to Action -->
+    <div class="cta">
+      ⚡
+      <h3>Ready to Make Predictions?</h3>
+      <p>Enter terrain parameters and get instant AI-powered avalanche risk assessments for your location.</p>
+      <button class="btn" onclick="navigateTo('prediction')">Go to Prediction Tool →</button>
+    </div>
+  </section>
+
+  <!-- 📘 Guide Section -->
+  <section class="guide">
+    <h3>Need Help Getting Started?</h3>
+    <p>Visit our User Guide to learn about avalanche safety, real incidents, and how to use this system effectively.</p>
+    <button class="btn" onclick="navigateTo('guide')">View User Guide</button>
+  </section>
+
+  
+  <!-- 🌨️ RECENT AVALANCHE EVENTS SECTION -->
+  <h2 class="recent-title">Recent Avalanche Events in India</h2>
+
+  <div class="cards-container">
+
+    <!-- 1 -->
+    <div class="av-card">
+      <img src="/images/n1knaue8_uttarakhand-avalanche_625x300_02_March_25.png" />
+      <div class="info">
+        <h4>Mana (Chamoli)</h4>
+        <p>Uttarakhand • 2025</p>
+                <p>A sudden large snow mass collapse near the Indo-China border zone.</p>
+
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="av-card">
+      <img src="/images/i2.jpeg" />
+      <div class="info">
+        <h4>Gulmarg (Apharwat)</h4>
+        <p>Jammu & Kashmir • 2024</p>
+                <p>A major ski-slope avalanche impacting tourists and rescue operations.</p>
+
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="av-card">
+      <img src="/images/i3.jpeg"" />
+      <div class="info">
+        <h4>Bhaba Valley</h4>
+        <p>Himachal Pradesh • 2024</p>
+                <p>Triggered by heavy snowfall and unstable mountain slopes.</p>
+
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="av-card">
+      <img src="/images/i4.jpeg" />
+      <div class="info">
+        <h4>Draupadi Ka Danda</h4>
+        <p>Uttarakhand • 2022</p>
+                <p>A deadly avalanche affecting mountaineering training teams.</p>
+
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="av-card">
+      <img src="/images/i5.jpeg" />
+      <div class="info">
+        <h4>Siachen Glacier</h4>
+        <p>Ladakh • 2021</p>
+                <p>High-risk military zone with frequent ice collapses.</p>
+
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="av-card">
+      <img src="/images/i6.jpeg" />
+      <div class="info">
+        <h4>Gulmarg Region</h4>
+        <p>Jammu & Kashmir • 2023</p>
+                <p>A massive snow slide affecting ski patrol and rescue teams.</p>
+
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="av-card">
+      <img src="/images/i7.jpeg" />
+      <div class="info">
+        <h4>Nanda Devi</h4>
+        <p>Uttarakhand • Recent Decades</p>
+                <p>One of India’s most avalanche-prone Himalayan climbing regions.</p>
+
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="av-card">
+      <img src="/images/i8.jpeg" />
+      <div class="info">
+        <h4>Lahaul-Spiti</h4>
+        <p>Himachal Pradesh • Historic</p>
+                <p>Frequent winter avalanche events due to steep frozen slopes.</p>
+
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="av-card">
+      <img src="/images/i9.jpeg" />
+      <div class="info">
+        <h4>Gurez Valley</h4>
+        <p>Jammu & Kashmir • Avalanche-Prone</p>
+                <p>A high-risk terrain with repeated avalanche history affecting villages.</p>
+
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="av-card">
+      <img src="/images/i10.jpeg" />
+      <div class="info">
+        <h4>Rohtang Pass</h4>
+        <p>Himachal Pradesh • High Risk Zone</p>
+                <p>Heavy snow accumulation leads to frequent traffic-blocking avalanches.</p>
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <script>
+    function navigateTo(page) {
+      if (page === "prediction") window.location.href = "prediction.html";
+      if (page === "guide") window.location.href = "userguide.html";
+      if (page === "risk") window.location.href = "risk.html";
+      if (page === "home") window.location.href = "home.html";
+    }
+  </script>
+
+</body>
+</html>

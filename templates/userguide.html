@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Guide | Avalanche Risk Assessment System</title>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #f9fafb;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-weight: 700;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 50px 20px;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .section {
+      margin-bottom: 80px;
+    }
+
+    /* 🔹 Navbar */
+    nav {
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+    }
+
+    .navbar-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .brand i {
+      width: 32px;
+      height: 32px;
+      color: #2563eb;
+    }
+
+    .brand span {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #4b5563;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: #f3f4f6;
+      color: #111827;
+    }
+
+    @media (max-width: 640px) {
+      .nav-btn span {
+        display: none;
+      }
+    }
+
+    /* 🟦 Header Section */
+    .page-header {
+      margin-bottom: 40px;
+    }
+
+    .page-header .icon-circle {
+      background-color: #2563eb;
+      padding: 15px;
+      display: inline-block;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    .page-header p {
+      color: #6b7280;
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* 🖼️ Image Section */
+    .image-grid {
+      display: grid;
+      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+
+    .image-card {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .image-card:hover {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transform: translateY(-3px);
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border: none;
+    }
+
+    .image-card h3 {
+      font-size: 1.2rem;
+      margin: 15px 0 5px;
+      padding-left: 10px;
+      color: #111827;
+    }
+
+    .image-card p {
+      color: #4b5563;
+      padding: 0 15px 20px;
+      font-size: 0.95rem;
+    }
+
+    /* ⚙️ Features Section */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: #fff;
+      border: 1px solid #f3f4f6;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.15);
+      transform: translateY(-3px);
+    }
+
+    .feature-icon {
+      background: #dbeafe;
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    /* 🆘 Emergency Section */
+    .emergency {
+      background: linear-gradient(to right, #2563eb, #1e3a8a);
+      color: white;
+      border-radius: 15px;
+      padding: 40px;
+      text-align: left;
+    }
+
+    .emergency-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .emergency-card {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 15px;
+      backdrop-filter: blur(4px);
+    }
+
+    .explain-box {
+      background: #eef2ff;
+      padding: 25px;
+      border-radius: 15px;
+      line-height: 1.8;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="navbar-container">
+      <div class="brand" onclick="window.location.href='home.html'">
+        <i ></i>
+        <span>Avalanche Risk Assessment System</span>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="window.location.href='home.html'">
+          <i></i><span>Home</span>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='prediction.html'">
+          <i></i><span>Prediction</span>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='userguide.html'">
+          <i></i><span>User Guide</span>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='risk.html'">
+          <i></i><span>Risk Monitor</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="text-center page-header">
+      <div class="icon-circle"><i data-lucide="book-open" style="color:white;"></i></div>
+      <h1>User Guide</h1>
+      <p>Learn about avalanche safety and understand how to use this prediction system effectively.</p>
+    </div>
+
+    <!-- Images Section (Replaced Video Section) -->
+    <section class="section">
+      <h2 style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <i data-lucide="image" style="color:#2563eb;"></i> Educational Images
+      </h2>
+
+      <div class="image-grid">
+
+        <div class="image-card">
+          <img src="/templates/images/i6.jpeg" alt="Avalanche Image 1">
+          <h3>Understanding Avalanche Formation</h3>
+          <p>This image explains how avalanches form and what factors increase snow instability.</p>
+        </div>
+
+        <div class="image-card">
+          <img src="/templates/images/i4.jpeg" alt="Avalanche Image 2">
+          <h3>Avalanche Safety Awareness</h3>
+          <p>Learn key safety precautions and survival tips in avalanche-prone zones.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section">
+      <h2 style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <i data-lucide="shield" style="color:#2563eb;"></i> System Features
+      </h2>
+      <div class="feature-grid" id="featureGrid"></div>
+    </section>
+
+    <!-- Terrain Explanations -->
+    <section class="section">
+      <h2 style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+        <i data-lucide="info" style="color:#2563eb;"></i> Terrain Feature Explanations
+      </h2>
+
+      <div class="explain-box">
+        <p><b>1. Elevation:</b> Height above sea level.  
+        <br><b>Formula:</b> Elevation = DEM cell value (z)</p>
+
+        <p><b>2. Elevation Sum:</b> Sum of nearby elevation values.  
+        <br><b>Formula:</b> z₁ + z₂ + ... + z₉ (3×3 window)</p>
+
+        <p><b>3. Slope:</b> Steepness of terrain (avalanches occur mostly at 30–45°).  
+        <br><b>Formula:</b> arctan( √((dz/dx)² + (dz/dy)²) )</p>
+
+        <p><b>4. Slope Sum:</b> Total slopes in a neighborhood.  
+        <br><b>Formula:</b> slope₁ + slope₂ + ... + slope₉</p>
+
+        <p><b>5. Aspect:</b> Direction the slope faces (0–360°).  
+        <br><b>Formula:</b> atan2(dz/dy, –dz/dx)</p>
+      </div>
+    </section>
+
+    <!-- Emergency -->
+    <section class="emergency">
+      <h2>Emergency Contacts</h2>
+      <div class="emergency-grid">
+        <div class="emergency-card">
+          <h3>National Emergency</h3>
+          <p>112</p>
+        </div>
+        <div class="emergency-card">
+          <h3>NDRF Helpline</h3>
+          <p>9711077372</p>
+        </div>
+        <div class="emergency-card">
+          <h3>Police Control Room</h3>
+          <p>100</p>
+        </div>
+      </div>
+      <p class="note">In case of an avalanche emergency, contact local authorities immediately.</p>
+    </section>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    lucide.createIcons();
+
+    const features = [
+      { icon: 'mountain', title: 'Real-Time Risk Assessment', desc: 'Uses elevation, slope, and aspect for risk calculation.' },
+      { icon: 'alert-triangle', title: 'Location-Specific Analysis', desc: 'Works for regions like Leh, Manali, Gulmarg, and Shimla.' },
+      { icon: 'shield', title: 'Machine Learning Accuracy', desc: 'Trained using Random Forest algorithm.' },
+      { icon: 'check-circle', title: 'Simple Interface', desc: 'User-friendly and easy to understand.' },
+    ];
+
+    const featureGrid = document.getElementById('featureGrid');
+
+    features.forEach(f => {
+      const div = document.createElement('div');
+      div.className = 'feature-card';
+      div.innerHTML = `
+        <div class="feature-icon"><i data-lucide="${f.icon}" style="color:#2563eb;"></i></div>
+        <h3>${f.title}</h3>
+        <p>${f.desc}</p>
+      `;
+      featureGrid.appendChild(div);
+    });
+
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>

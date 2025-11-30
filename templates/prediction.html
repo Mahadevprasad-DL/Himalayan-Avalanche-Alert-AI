@@ -1,0 +1,297 @@
+<!-- prediction.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Avalanche Risk Prediction</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Minimal CSS adapted from earlier design (kept concise) */
+    * { box-sizing: border-box; margin:0; padding:0; font-family: Poppins, system-ui, sans-serif; }
+    body { background:#f9fafb; color:#1f2937; padding-bottom:80px; }
+    nav { background:#fff; box-shadow:0 4px 6px rgba(0,0,0,0.05); position:sticky; top:0; z-index:50; }
+    .navbar-container { max-width:1200px; margin:0 auto; padding:0 16px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+    .brand { display:flex; gap:8px; align-items:center; cursor:pointer; color:#111827; font-weight:600; }
+    .nav-buttons { display:flex; gap:8px; }
+    .nav-btn { background:transparent; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; color:#4b5563; display:flex; gap:8px; align-items:center; }
+    .nav-btn.active { background:#2563eb; color:#fff; box-shadow: 0 4px 6px rgba(37,99,235,0.2); }
+    .container { max-width:1100px; margin:28px auto; padding:0 16px; }
+    .header { text-align:center; margin-bottom:24px; }
+    .icon-circle { background:#2563eb; padding:12px; display:inline-block; border-radius:50%; color:#fff; margin-bottom:12px; }
+    form { display:grid; grid-template-columns: 1fr 340px; gap:20px; align-items:start; }
+    .panel { background:#fff; padding:20px; border-radius:12px; box-shadow:0 10px 20px rgba(0,0,0,0.05); }
+    .grid-2 { display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; }
+    .field { margin-bottom:10px; }
+    label { display:flex; gap:8px; align-items:center; font-weight:600; color:#374151; margin-bottom:6px; }
+    input, select { width:100%; padding:10px 12px; border-radius:8px; border:1px solid #d1d5db; font-size:14px; }
+    input:focus, select:focus { outline:none; box-shadow:0 0 0 4px rgba(37,99,235,0.12); border-color:#2563eb; }
+    .note { font-size:12px; color:#6b7280; margin-top:6px; }
+    button.submit { width:100%; padding:12px; border-radius:10px; border:none; background:#2563eb; color:#fff; font-weight:700; cursor:pointer; margin-top:8px; }
+    .results { margin-top:18px; }
+    .result-cards { display:flex; gap:12px; margin-top:12px; flex-wrap:wrap; }
+    .card { background:linear-gradient(180deg,#f8fbff,#eef8ff); padding:14px; border-radius:8px; flex:1 1 180px; text-align:center; }
+    .card .value { font-size:28px; font-weight:800; margin-top:8px; }
+    .alert { margin-top:12px; background:#eff6ff; border-left:4px solid #2563eb; padding:10px; border-radius:6px; color:#374151; }
+    .dropdown-list { position:relative; }
+    .dropdown-options { position:absolute; left:0; right:0; top:100%; background:#fff; border:1px solid #d1d5db; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.08); max-height:200px; overflow:auto; z-index:20; }
+    .dropdown-options button { width:100%; padding:10px; border:none; background:transparent; text-align:left; cursor:pointer; }
+    .dropdown-options button:hover { background:#e6f2ff; }
+    @media (max-width:1000px) { form { grid-template-columns:1fr; } .nav-btn span { display:none; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="navbar-container">
+      <div class="brand" onclick="window.location.href='home.html'">
+        <i></i><span>Avalanche Risk Assessment System</span>
+      </div>
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="window.location.href='home.html'"><i></i><span>Home</span></button>
+        <button class="nav-btn active" onclick="window.location.href='prediction.html'"><i></i><span>Prediction</span></button>
+        <button class="nav-btn" onclick="window.location.href='userguide.html'"><i ></i><span>User Guide</span></button>
+        <button class="nav-btn" onclick="window.location.href='risk.html'">
+          <i ></i><span>Risk Monitor</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="header">
+      <div class="icon-circle"><i data-lucide="calculator"></i></div>
+      <h1>Avalanche Risk Prediction</h1>
+      <p>Enter terrain parameters below and click <strong>Predict</strong> to get the probability and risk stage for avalanche occurrence.</p>
+    </div>
+
+    <form id="predictForm" class="panel">
+      <div>
+        <div class="grid-2">
+          <div class="field">
+            <label><i data-lucide="compass"></i> Aspect Mean (°)</label>
+            <input id="aspect_mean" name="aspect_mean" type="number" step="0.01" placeholder="e.g., 180.5" required />
+            <div class="note">Direction (0-360). North=0/360, East=90, South=180, West=270</div>
+          </div>
+
+          <div class="field">
+            <label><i data-lucide="mountain"></i> Elevation Mean (m)</label>
+            <input id="elevation_mean" name="elevation_mean" type="number" step="0.1" placeholder="e.g., 3500.75" required />
+            <div class="note">Average elevation</div>
+          </div>
+
+          <div class="field">
+            <label><i data-lucide="mountain"></i> Elevation Sum (m)</label>
+            <input id="elevation_sum" name="elevation_sum" type="number" step="0.1" placeholder="e.g., 10500" required />
+            <div class="note">Cumulative elevation (sum)</div>
+          </div>
+
+          <div class="field">
+            <label><i data-lucide="trending-up"></i> Slope Mean (°)</label>
+            <input id="slope_mean" name="slope_mean" type="number" step="0.01" placeholder="e.g., 35.2" required />
+            <div class="note">Average slope angle</div>
+          </div>
+
+          <div class="field">
+            <label><i data-lucide="trending-up"></i> Slope Sum (°)</label>
+            <input id="slope_sum" name="slope_sum" type="number" step="0.01" placeholder="e.g., 105.6" required />
+            <div class="note">Cumulative slope angle</div>
+          </div>
+
+          <div class="field dropdown-list" style="position:relative;">
+            <label><i data-lucide="map-pin"></i> Location</label>
+            <input id="location_name" type="text" placeholder="Select or type location" autocomplete="off" required />
+            <div id="locationOptions" class="dropdown-options" style="display:none;"></div>
+            <div class="note">Pick from the dropdown (required).</div>
+          </div>
+        </div>
+
+        <button id="predictBtn" type="submit" class="submit">Predict</button>
+
+        <div id="message" style="margin-top:10px;color:#b91c1c;"></div>
+      </div>
+
+      <aside style="min-width:280px;">
+        <div style="position:sticky; top:80px;">
+          <div style="background:linear-gradient(180deg,#f8fafc,#f1f5f9); padding:14px; border-radius:10px; box-shadow:0 8px 18px rgba(0,0,0,0.06);">
+            <h3>Parameter Guidelines</h3>
+            <p style="font-size:13px;color:#475569;">Aspect: N=0/360, E=90, S=180, W=270. Slopes 30–45° are most critical. Elevation 3000m+ higher risk.</p>
+            <hr style="margin:12px 0;border:none;border-top:1px solid #e6eefc;">
+            <h4 style="margin-bottom:6px;">Locations</h4>
+            <ul id="locList" style="font-size:13px;color:#475569; padding-left:18px;">
+              <!-- filled by JS -->
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </form>
+
+    <div id="resultsPanel" class="panel results" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>Prediction Results</h2>
+        <div id="riskBadge" style="padding:6px 10px;border-radius:10px;background:#f8fafc;font-weight:700;"></div>
+      </div>
+
+      <div class="result-cards">
+
+        <div class="card">
+          <div style="font-size:13px;color:#475569;">Avalanche Probability</div>
+          <div id="probValue" class="value">--%</div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:13px;color:#475569;">Predicted Class</div>
+          <div id="predClass" class="value">--</div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:13px;color:#475569;">Risk Stage</div>
+          <div id="riskStage" class="value">--</div>
+        </div>
+
+        <!-- ⭐ ADDED NEW CONFIDENCE SCORE CARD -->
+        <div class="card">
+          <div style="font-size:13px;color:#475569;">Confidence Score</div>
+          <div id="confidenceValue" class="value">--%</div>
+        </div>
+
+      </div>
+
+      <div class="alert" style="margin-top:12px;">
+        <strong>Note:</strong> This result comes from a Random Forest model trained on the uploaded dataset.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const LOCATIONS = [
+      "Leh (Ladakh)",
+      "Gulmarg (J&K)",
+      "Manali (Himachal Pradesh)",
+      "Shimla (Himachal Pradesh)",
+      "Rohtang Pass (Himachal Pradesh)",
+      "Auli (Uttarakhand)",
+      "Kedarnath (Uttarakhand)",
+      "Gangotri (Uttarakhand)",
+      "Nanda Devi (Uttarakhand)",
+      "Solang Valley (Himachal Pradesh)"
+    ];
+
+    // Populate location list in aside
+    const locList = document.getElementById("locList");
+    LOCATIONS.forEach(loc => {
+      const li = document.createElement("li");
+      li.textContent = loc;
+      locList.appendChild(li);
+    });
+
+    const locationInput = document.getElementById("location_name");
+    const locationOptions = document.getElementById("locationOptions");
+
+    // Show dropdown filtered
+    function showLocationOptions() {
+      const q = locationInput.value.trim().toLowerCase();
+      const filtered = LOCATIONS.filter(l => l.toLowerCase().includes(q));
+      if (filtered.length === 0) {
+        locationOptions.style.display = "none";
+        return;
+      }
+      locationOptions.innerHTML = "";
+      filtered.forEach(l => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = l;
+        btn.addEventListener("click", () => {
+          locationInput.value = l;
+          locationOptions.style.display = "none";
+        });
+        locationOptions.appendChild(btn);
+      });
+      locationOptions.style.display = "block";
+    }
+
+    locationInput.addEventListener("focus", showLocationOptions);
+    locationInput.addEventListener("input", showLocationOptions);
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".dropdown-list")) {
+        locationOptions.style.display = "none";
+      }
+    });
+
+    // Submit handler
+    const form = document.getElementById("predictForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      document.getElementById("message").textContent = "";
+
+      // Gather values
+      const payload = {
+        aspect_mean: document.getElementById("aspect_mean").value,
+        elevation_mean: document.getElementById("elevation_mean").value,
+        elevation_sum: document.getElementById("elevation_sum").value,
+        slope_mean: document.getElementById("slope_mean").value,
+        slope_sum: document.getElementById("slope_sum").value,
+        location_name: document.getElementById("location_name").value.trim()
+      };
+
+      // Validate location
+      if (!LOCATIONS.includes(payload.location_name)) {
+        document.getElementById("message").textContent = "Please choose a location from the dropdown list (required).";
+        return;
+      }
+
+      // Basic numeric validation
+      for (const k of ["aspect_mean","elevation_mean","elevation_sum","slope_mean","slope_sum"]) {
+        if (payload[k] === "" || isNaN(payload[k])) {
+          document.getElementById("message").textContent = "Please fill all numeric fields with valid numbers.";
+          return;
+        }
+      }
+
+      const btn = document.getElementById("predictBtn");
+      if (btn) { btn.disabled = true; btn.textContent = "Predicting..."; }
+
+      try {
+        const resp = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => null);
+          document.getElementById("message").textContent = err && err.error ? err.error : "Prediction failed. See backend logs.";
+          return;
+        }
+
+        const data = await resp.json();
+
+        // Update UI
+        document.getElementById("probValue").textContent = (data.percentage ?? Math.round(data.probability*100)) + "%";
+        document.getElementById("predClass").textContent = data.predicted_class;
+        document.getElementById("riskStage").textContent = data.risk_stage;
+
+        // ⭐ ADDED CONFIDENCE SCORE UPDATE
+        document.getElementById("confidenceValue").textContent = data.confidence + "%";
+
+        // badge color
+        const badge = document.getElementById("riskBadge");
+        badge.textContent = data.risk_stage;
+        if (data.risk_stage === "Low") badge.style.background = "#bbf7d0";
+        else if (data.risk_stage === "Moderate") badge.style.background = "#fef3c7";
+        else if (data.risk_stage === "High") badge.style.background = "#fed7aa";
+        else badge.style.background = "#fecaca";
+
+        document.getElementById("resultsPanel").style.display = "block";
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("message").textContent = "Network or server error. Check console or backend logs.";
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = "Predict"; }
+      }
+    });
+  </script>
+</body>
+</html>
